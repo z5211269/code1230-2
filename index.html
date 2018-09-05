@@ -49,7 +49,7 @@ map.on('load', function() {
                     [61, 'blue'],
                     [164, 'purplr']
                     ]
-                         },    
+              },    
 
             // Get fill-extrusion-height from the source 'height' property.
             'fill-extrusion-height': {
@@ -64,10 +64,10 @@ map.on('load', function() {
             },
 
             // Get fill-extrusion-base from the source 'base_height' property.
-            'fill-extrusion-base': ['get', 'base_height'],
+            //'fill-extrusion-base': ['get', 'base_height'],
 
             // Make extrusions slightly opaque for see through indoor walls.
-            'fill-extrusion-opacity': 0.5
+            'fill-extrusion-opacity': 0.9
         }
     });
 });
