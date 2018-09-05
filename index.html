@@ -41,13 +41,27 @@ map.on('load', function() {
 
             // Get the fill-extrusion-color from the source 'color' property.
             'fill-extrusion-color': {
-                'propery': 'bangzhu1',
+                'property': 'bangzhu1',
                 "stops": [
                     [0, 'pinck'],
-                    [
+                    [7, 'yellow],
+                    [22, 'green'],
+                    [61, 'blue'],
+                    [164, 'purplr']
+                    ]
+                         },    
 
             // Get fill-extrusion-height from the source 'height' property.
-            'fill-extrusion-height': ['get', 'height'],
+            'fill-extrusion-height': {
+                    'property': 'MIDDLE',
+                    "stops": [
+                        [0, 1000],
+                        [8, 2000],
+                        [24, 3000],
+                        [56, 4000],
+                        [134, 5000]
+                        ]
+            },
 
             // Get fill-extrusion-base from the source 'base_height' property.
             'fill-extrusion-base': ['get', 'base_height'],
