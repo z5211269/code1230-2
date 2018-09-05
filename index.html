@@ -40,7 +40,11 @@ map.on('load', function() {
             // https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions
 
             // Get the fill-extrusion-color from the source 'color' property.
-            'fill-extrusion-color': ['get', 'color'],
+            'fill-extrusion-color': {
+                'propery': 'bangzhu1',
+                "stops": [
+                    [0, 'pinck'],
+                    [
 
             // Get fill-extrusion-height from the source 'height' property.
             'fill-extrusion-height': ['get', 'height'],
