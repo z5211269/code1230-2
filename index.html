@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset='utf-8' />
-    <title>Display buildings in 3D</title>
+    <title>Extrude polygons for 3D indoor mapping.</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.css' rel='stylesheet' />
@@ -15,55 +15,43 @@
 
 <div id='map'></div>
 <script>
-mapboxgl.accessToken = '<your access token here>';
+mapboxgl.accessToken = 'pk.eyJ1IjoidGVyZXNhMTIzIiwiYSI6ImNqbG9pYmRkMDF0dzczd21xMGJhdW13MGwifQ.8j-oxaf7ba2pVXWcQkjXJg';
 var map = new mapboxgl.Map({
-    style: 'mapbox://styles/mapbox/light-v9',
-    center: [-74.0066, 40.7135],
-    zoom: 15.5,
-    pitch: 45,
-    bearing: -17.6,
-    container: 'map'
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v9',
+    center: [-87.61694, 41.86625],
+    zoom: 15.99,
+    pitch: 40,
+    bearing: 20
 });
 
-// The 'building' layer in the mapbox-streets vector source contains building-height
-// data from OpenStreetMap.
 map.on('load', function() {
-    // Insert the layer beneath any symbol layer.
-    var layers = map.getStyle().layers;
-
-    var labelLayerId;
-    for (var i = 0; i < layers.length; i++) {
-        if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
-            labelLayerId = layers[i].id;
-            break;
-        }
-    }
-
     map.addLayer({
-        'id': '3d-buildings',
-        'source': 'composite',
-        'source-layer': 'building',
-        'filter': ['==', 'extrude', 'true'],
+        'id': 'room-extrusion',
         'type': 'fill-extrusion',
-        'minzoom': 15,
+        'source': {
+            // GeoJSON Data source used in vector tiles, documented at
+            // https://gist.github.com/ryanbaumann/a7d970386ce59d11c16278b90dde094d
+            'type': 'geojson',
+            'data': 'https://www.mapbox.com/mapbox-gl-js/assets/indoor-3d-map.geojson'
+        },
         'paint': {
-            'fill-extrusion-color': '#aaa',
+            // See the Mapbox Style Specification for details on data expressions.
+            // https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions
 
-            // use an 'interpolate' expression to add a smooth transition effect to the
-            // buildings as the user zooms in
-            'fill-extrusion-height': [
-                "interpolate", ["linear"], ["zoom"],
-                15, 0,
-                15.05, ["get", "height"]
-            ],
-            'fill-extrusion-base': [
-                "interpolate", ["linear"], ["zoom"],
-                15, 0,
-                15.05, ["get", "min_height"]
-            ],
-            'fill-extrusion-opacity': .6
+            // Get the fill-extrusion-color from the source 'color' property.
+            'fill-extrusion-color': ['get', 'color'],
+
+            // Get fill-extrusion-height from the source 'height' property.
+            'fill-extrusion-height': ['get', 'height'],
+
+            // Get fill-extrusion-base from the source 'base_height' property.
+            'fill-extrusion-base': ['get', 'base_height'],
+
+            // Make extrusions slightly opaque for see through indoor walls.
+            'fill-extrusion-opacity': 0.5
         }
-    }, labelLayerId);
+    });
 });
 </script>
 
