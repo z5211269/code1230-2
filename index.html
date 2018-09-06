@@ -2,11 +2,11 @@
 <html>
 <head>
     <meta charset='utf-8' />
-    <title>Extrude polygons for 3D indoor mapping.</title>
+    <title></title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.js'></script>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js'></script>
     <script src='./data.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.48.0/mapbox-gl.css' rel='stylesheet' />
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' />
     <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -16,7 +16,7 @@
 
 <div id='map'></div>
 <script>
-mapboxgl.accessToken = 'pk.eyJ1IjoidGVyZXNhMTIzIiwiYSI6ImNqbG9pYmRkMDF0dzczd21xMGJhdW13MGwifQ.8j-oxaf7ba2pVXWcQkjXJg';
+mapboxgl.accessToken = 'pk.eyJ1IjoidGVyZXNhMTIzIiwiYSI6ImNqbHA5dXplcjIycWUzd29zM3Uya3hidWMifQ.KYno3Ky-NnoqIV6E_tbtLA';
 var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v9',
@@ -25,7 +25,6 @@ var map = new mapboxgl.Map({
     pitch: 40,
     bearing: 20
 });
-
 map.on('load', function() {
     map.addLayer({
         'id': 'data',
@@ -34,40 +33,34 @@ map.on('load', function() {
             // GeoJSON Data source used in vector tiles, documented at
             // https://gist.github.com/ryanbaumann/a7d970386ce59d11c16278b90dde094d
             'type': 'geojson',
-            'data':data
+            'data': data
         },
         'paint': {
             // See the Mapbox Style Specification for details on data expressions.
             // https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions
-
             // Get the fill-extrusion-color from the source 'color' property.
             'fill-extrusion-color': {
-                'property': 'bangzhu1',
+                'property': 'bangzhu4',
                 "stops": [
-                    [0, 'pinck'],
-                    [7, 'yellow'],
-                    [22, 'green'],
-                    [61, 'blue'],
-                    [164, 'purplr']
+                    [0, '#FFB089'],
+                    [7, '#E86828'],
+                    [22, '#831243'],
+                    [61, '#520743'],
+                    [164, '#631A7D']
                     ]
-              },    
-
+            },
             // Get fill-extrusion-height from the source 'height' property.
             'fill-extrusion-height': {
-                    'property': 'MIDDLE',
-                    "stops": [
-                        [0, 1000],
-                        [8, 2000],
-                        [24, 3000],
-                        [56, 4000],
-                        [134, 5000]
-                        ]
+                'property': 'low4',
+                "stops": [
+                    [0, 2000],
+                    [7, 4000],
+                    [19, 7000],
+                    [44, 30000],
+                    [105, 50000],
+                    [198, 60000]
+                    ]
             },
-
-            // Get fill-extrusion-base from the source 'base_height' property.
-            //'fill-extrusion-base': ['get', 'base_height'],
-
-            // Make extrusions slightly opaque for see through indoor walls.
             'fill-extrusion-opacity': 0.9
         }
     });
@@ -75,4 +68,4 @@ map.on('load', function() {
 </script>
 
 </body>
-</html> 
+</html>
